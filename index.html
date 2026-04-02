@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shubhankar — HCI Researcher & Software Engineer</title>
+  <meta name="description" content="Shubhankar is a human-centered AI researcher bridging machine learning and HCI, with experience in experimental evaluation, UX and engineering.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ——— Reset & Base ——— */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #FAFAF7;
+      --fg: #1A1A18;
+      --accent: #C8432B;
+      --accent-soft: #F4E8E4;
+      --muted: #6B6B66;
+      --border: #E0DED8;
+      --card-bg: #FFFFFF;
+      --tag-bg: #F0EEEA;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'Outfit', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --section-gap: clamp(80px, 10vw, 140px);
+      --content-width: 1120px;
+      --side-pad: clamp(20px, 5vw, 80px);
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.65;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection { background: var(--accent); color: #fff; }
+
+    a { color: inherit; text-decoration: none; }
+
+    img { display: block; max-width: 100%; }
+
+    /* ——— Skip Link ——— */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 16px;
+      background: var(--accent);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      z-index: 1000;
+      transition: top 0.2s;
+    }
+    .skip-link:focus { top: 16px; }
+
+    /* ——— Nav ——— */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 var(--side-pad);
+      background: rgba(250, 250, 247, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    .nav.scrolled { border-bottom-color: var(--border); }
+
+    .nav-inner {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.25s ease;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--accent);
+      transition: width 0.3s var(--ease-out);
+    }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--fg);
+      margin: 5px 0;
+      transition: all 0.3s ease;
+    }
+
+    /* ——— Hero ——— */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 var(--side-pad);
+    }
+
+    .hero-inner {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      width: 100%;
+      padding-top: 64px;
+    }
+
+    .hero-label {
+      font-family: var(--mono);
+      font-size: clamp(0.72rem, 0.6rem + 0.4vw, 0.85rem);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 1.5rem + 4vw, 4.5rem);
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      max-width: 14ch;
+      margin-bottom: 28px;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: clamp(1rem, 0.85rem + 0.5vw, 1.2rem);
+      color: var(--muted);
+      max-width: 540px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 14px 28px;
+      border-radius: 6px;
+      transition: all 0.3s var(--ease-out);
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--fg);
+      color: var(--bg);
+    }
+    .btn-primary:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(200, 67, 43, 0.25);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--fg);
+      border: 1.5px solid var(--border);
+    }
+    .btn-secondary:hover {
+      border-color: var(--fg);
+      transform: translateY(-2px);
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      animation: float 2.5s ease-in-out infinite;
+    }
+    .hero-scroll-hint .line {
+      width: 1px;
+      height: 32px;
+      background: var(--border);
+    }
+    @keyframes float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ——— Sections ——— */
+    section {
+      padding: var(--section-gap) var(--side-pad);
+    }
+
+    .section-inner {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1.5px solid var(--fg);
+      margin-bottom: 56px;
+    }
+
+    .section-number {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.4rem);
+      letter-spacing: -0.02em;
+    }
+
+    /* ——— Project Cards ——— */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 32px;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 36px 32px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+      border: 1px solid var(--border);
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s var(--ease-out);
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(26, 26, 24, 0.08);
+    }
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .project-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .project-year {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .project-org {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .project-title {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .project-supervisors {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+
+    .project-desc {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 5px 12px;
+      background: var(--tag-bg);
+      border-radius: 100px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    .project-link {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.25s var(--ease-out);
+    }
+    .project-link:hover { gap: 10px; }
+    .project-link .arrow { transition: transform 0.25s var(--ease-out); }
+    .project-link:hover .arrow { transform: translateX(2px); }
+
+    /* ——— Publications ——— */
+    .publications-list { display: flex; flex-direction: column; gap: 0; }
+
+    .pub-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 32px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .pub-item:first-child { border-top: 1px solid var(--border); }
+
+    .pub-year {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .pub-content h3 {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .pub-venue {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .pub-placeholder {
+      color: var(--border);
+      font-style: italic;
+      font-size: 0.9rem;
+      padding: 20px 0;
+    }
+
+    /* ——— Timeline ——— */
+    .timeline { position: relative; padding-left: 36px; }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 8px;
+      bottom: 8px;
+      width: 1.5px;
+      background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 40px;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -36px;
+      top: 8px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      border: 2.5px solid var(--accent);
+      background: var(--bg);
+      z-index: 1;
+    }
+    .timeline-item:first-child::before {
+      background: var(--accent);
+    }
+
+    .timeline-date {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .timeline-role {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    .timeline-org {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* ——— Contact ——— */
+    .contact-section {
+      text-align: center;
+      padding-bottom: clamp(80px, 10vw, 160px);
+    }
+
+    .contact-headline {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 1.5rem + 2vw, 3.2rem);
+      letter-spacing: -0.025em;
+      margin-bottom: 16px;
+    }
+    .contact-headline em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .contact-desc {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 460px;
+      margin: 0 auto 40px;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 12px 24px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      transition: all 0.3s var(--ease-out);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .contact-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(200, 67, 43, 0.1);
+    }
+
+    /* ——— Footer ——— */
+    .footer {
+      padding: 32px var(--side-pad);
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-text {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ——— Animations ——— */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-stagger > .reveal {
+      transition-delay: calc(var(--i, 0) * 100ms);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .hero-scroll-hint { animation: none; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+
+    /* ——— Focus ——— */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* ——— Mobile ——— */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: rgba(250, 250, 247, 0.97);
+        backdrop-filter: blur(16px);
+        padding: 24px var(--side-pad) 32px;
+        gap: 20px;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-toggle { display: block; }
+
+      .hero { min-height: 90vh; }
+      .hero-scroll-hint { display: none; }
+
+      .projects-grid { grid-template-columns: 1fr; }
+
+      .pub-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .contact-links { flex-direction: column; align-items: center; }
+      .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ——— Nav ——— -->
+  <nav class="nav" aria-label="Primary navigation">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Shubhankar</a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" role="list">
+        <li><a href="#research">Research</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#cv">Experience</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ——— Hero ——— -->
+  <header class="hero" id="main">
+    <div class="hero-inner">
+      <p class="hero-label reveal">HCI Researcher & Software Engineer</p>
+      <h1 class="hero-headline reveal">Designing how humans <em>negotiate control</em> with AI systems</h1>
+      <p class="hero-desc reveal">Human-centered AI researcher bridging machine learning and HCI, with experience in experimental evaluation, UX and engineering. I study how autonomy is shared, contested, and evolved through interaction — across creative tools, developer environments, and intelligent interfaces.</p>
+      <div class="hero-ctas reveal">
+        <a href="#research" class="btn btn-primary">View Research</a>
+        <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+        <a href="#cv" class="btn btn-secondary">Full CV</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <span class="line"></span>
+      Scroll
+    </div>
+  </header>
+
+  <!-- ——— Research ——— -->
+  <section id="research">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <span class="section-number">01</span>
+        <h2 class="section-title">Research & Projects</h2>
+      </div>
+      <div class="projects-grid reveal-stagger">
+
+        <article class="project-card reveal" style="--i:0">
+          <div class="project-meta">
+            <span class="project-year">Mar – Aug 2024</span>
+            <span class="project-org">Inria, Ex-Situ Lab — Paris-Saclay</span>
+          </div>
+          <h3 class="project-title">Tune Crafter</h3>
+          <p class="project-supervisors">Supervised by Prof. Wendy E. Mackay & Prof. Janin Koch</p>
+          <p class="project-desc">Explored Algebraic Machine Learning (AML) for music creation. Developed an interactive prototype enhancing AI explainability in HCI for professional music practice — using computer vision (Google MediaPipe) to track finger gestures and map them to musical instruments.</p>
+          <div class="project-tags">
+            <span class="tag">explainable AI</span>
+            <span class="tag">algebraic ML</span>
+            <span class="tag">gesture interaction</span>
+            <span class="tag">music AI</span>
+            <span class="tag">user study</span>
+          </div>
+          <a href="https://scavalleroo.github.io/Tune-Crafter/" class="project-link" target="_blank" rel="noopener">
+            View Project <span class="arrow">&rarr;</span>
+          </a>
+        </article>
+
+        <article class="project-card reveal" style="--i:1">
+          <div class="project-meta">
+            <span class="project-year">Oct 2024 – Sep 2025</span>
+            <span class="project-org">Smart Trade — Aix-en-Provence</span>
+          </div>
+          <h3 class="project-title">AI-Driven Optimization for Cockpit Trading Platform</h3>
+          <p class="project-supervisors">Under Architect Mathieu Estrata & Prof. Youssef Mesri</p>
+          <p class="project-desc">Developed AI-driven performance-optimization algorithms for Cockpit, a real-time trading platform used by leading global banks and corporations. Built custom CUDA GPU kernels for accelerated inference on Transformer components.</p>
+          <div class="project-tags">
+            <span class="tag">AI/HPC</span>
+            <span class="tag">CUDA</span>
+            <span class="tag">real-time systems</span>
+            <span class="tag">transformers</span>
+          </div>
+        </article>
+
+        <article class="project-card reveal" style="--i:2">
+          <div class="project-meta">
+            <span class="project-year">Oct 2024 – Mar 2025</span>
+            <span class="project-org">Mines Paris-PSL</span>
+          </div>
+          <h3 class="project-title">GPU Acceleration of Transformer Components</h3>
+          <p class="project-desc">Ported core Transformer blocks (multi-head attention, layer norm, positional encodings) into custom CUDA kernels to study kernel fusion and memory access patterns. Benchmarked against PyTorch reference on GPT-style models, examining shared-memory usage, occupancy, and warp-level parallelism.</p>
+          <div class="project-tags">
+            <span class="tag">CUDA</span>
+            <span class="tag">C++</span>
+            <span class="tag">PyTorch</span>
+            <span class="tag">GPU kernels</span>
+          </div>
+        </article>
+
+        <article class="project-card reveal" style="--i:3">
+          <div class="project-meta">
+            <span class="project-year">Aug 2016 – Aug 2022</span>
+            <span class="project-org">Samsung Research Institute — Noida, India</span>
+          </div>
+          <h3 class="project-title">Galaxy Store, Smartcrop & Global Goals</h3>
+          <p class="project-desc">Six years across core Android apps, innovation, patents, research, and ML. Optimized Galaxy Store search (doubled active users, +$3M revenue). Designed Smartcrop — a CV-based screenshot analyzer deployed on millions of devices. Spearheaded the UN Global Goals app and Galaxy Watch 4 interface. Implemented Ultra Data Saving in Samsung Max VPN (50% data savings, 23% power reduction).</p>
+          <div class="project-tags">
+            <span class="tag">search optimization</span>
+            <span class="tag">computer vision</span>
+            <span class="tag">Android</span>
+            <span class="tag">production ML</span>
+            <span class="tag">UX</span>
+          </div>
+        </article>
+
+        <article class="project-card reveal" style="--i:4">
+          <div class="project-meta">
+            <span class="project-year">Jan – May 2023</span>
+            <span class="project-org">Universidad Politécnica de Madrid</span>
+          </div>
+          <h3 class="project-title">Digital Nomads: Co-Work Partner & Place Finder</h3>
+          <p class="project-desc">Designed and evaluated a mobile prototype for matching people and places to work. Conducted 16-participant usability tests (students, freelancers, corporate workers), achieving SUS = 85.5. Identified key design fixes for distance filtering, status visibility, and filter discoverability.</p>
+          <div class="project-tags">
+            <span class="tag">HCI</span>
+            <span class="tag">UX research</span>
+            <span class="tag">usability testing</span>
+            <span class="tag">hi-fi prototype</span>
+          </div>
+        </article>
+
+        <article class="project-card reveal" style="--i:5">
+          <div class="project-meta">
+            <span class="project-year">Jan – Apr 2016</span>
+            <span class="project-org">University of Florida</span>
+          </div>
+          <h3 class="project-title">Autonomous Braking Satisfaction Study (BMW)</h3>
+          <p class="project-desc">Designed and conducted a human-subjects study evaluating driver satisfaction with autonomous braking in simulated driving environments, comparing it to BMW Active Cruise Control. Formulated hypotheses, designed experimental protocols, collected quantitative and qualitative data, and performed statistical analysis (t-tests, ANOVA).</p>
+          <div class="project-tags">
+            <span class="tag">human-subjects study</span>
+            <span class="tag">automotive HCI</span>
+            <span class="tag">statistical analysis</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— Publications ——— -->
+  <section id="publications">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <span class="section-number">02</span>
+        <h2 class="section-title">Publications & Writing</h2>
+      </div>
+      <div class="publications-list">
+
+        <div class="pub-item reveal">
+          <span class="pub-year">2024</span>
+          <div class="pub-content">
+            <h3>Tune Crafter: Gesture-Based Control for AI Music Generation</h3>
+            <p class="pub-venue">Master's Thesis — Inria, Ex-Situ Lab, Université Paris-Saclay</p>
+          </div>
+        </div>
+
+        <div class="pub-item reveal">
+          <span class="pub-year">—</span>
+          <div class="pub-content">
+            <p class="pub-placeholder">More publications coming soon.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— Education ——— -->
+  <section id="education">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <span class="section-number">03</span>
+        <h2 class="section-title">Education</h2>
+      </div>
+      <div class="timeline">
+
+        <div class="timeline-item reveal">
+          <span class="timeline-date">Oct 2024 – Dec 2025</span>
+          <h3 class="timeline-role">Masters in High Performance Computing & AI</h3>
+          <p class="timeline-org">Ecoles des Mines Paris-PSL — France</p>
+        </div>
+
+        <div class="timeline-item reveal">
+          <span class="timeline-date">2022 – 2024</span>
+          <h3 class="timeline-role">Masters in Computer Science: Human-Computer Interaction</h3>
+          <p class="timeline-org">Universidad Politécnica de Madrid & Université Paris-Saclay — GPA: 8.8/10</p>
+        </div>
+
+        <div class="timeline-item reveal">
+          <span class="timeline-date">Aug 2012 – Aug 2016</span>
+          <h3 class="timeline-role">Bachelor of Engineering in Computer Science & Technology</h3>
+          <p class="timeline-org">IIIT-Delhi — with senior certificate at University of Florida</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— Experience ——— -->
+  <section id="cv">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <span class="section-number">04</span>
+        <h2 class="section-title">Experience</h2>
+      </div>
+      <div class="timeline">
+
+        <div class="timeline-item reveal">
+          <span class="timeline-date">Oct 2024 – Sep 2025</span>
+          <h3 class="timeline-role">Research Engineer</h3>
+          <p class="timeline-org">Smart Trade — Aix-en-Provence, France</p>
+          <p class="project-desc" style="margin-top:8px">AI-driven performance optimization for Cockpit, a real-time trading platform for global banks. Under Architect Mathieu Estrata and Prof. Youssef Mesri.</p>
+        </div>
+
+        <div class="timeline-item reveal">
+          <span class="timeline-date">Mar 2024 – Aug 2024</span>
+          <h3 class="timeline-role">Research Intern</h3>
+          <p class="timeline-org">Inria, Ex-Situ Lab — Paris-Saclay, France</p>
+          <p class="project-desc" style="margin-top:8px">Explored Algebraic Machine Learning for music creation. Built interactive prototype enhancing AI explainability under Prof. Janin Koch and Prof. Wendy E. Mackay.</p>
+        </div>
+
+        <div class="timeline-item reveal">
+          <span class="timeline-date">Aug 2016 – Aug 2022</span>
+          <h3 class="timeline-role">Software Engineer</h3>
+          <p class="timeline-org">Samsung Research Institute — Noida, India</p>
+          <p class="project-desc" style="margin-top:8px">Core Android apps, innovation, patents, research & ML. Galaxy Store search optimization ($3M revenue impact), Smartcrop computer vision, UN Global Goals app, Ultra Data Saving in Samsung Max VPN.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— Contact ——— -->
+  <section id="contact" class="contact-section">
+    <div class="section-inner">
+      <div class="section-header reveal" style="justify-content: center; border-bottom: none; margin-bottom: 32px;">
+        <span class="section-number">05</span>
+        <h2 class="section-title">Contact</h2>
+      </div>
+      <h3 class="contact-headline reveal">Let's <em>connect</em></h3>
+      <p class="contact-desc reveal">Whether it's about research collaboration, PhD opportunities, or just an interesting conversation — I'd love to hear from you.</p>
+      <div class="contact-links reveal">
+        <a href="mailto:shubhankar12102@iiitd.ac.in" class="contact-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Email
+        </a>
+        <a href="https://github.com/shubhankarx" class="contact-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          GitHub
+        </a>
+        <a href="https://linkedin.com/in/shubhankars" class="contact-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— Footer ——— -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="footer-text">&copy; 2026 Shubhankar</span>
+      <span class="footer-text">Built with intention, not a template.</span>
+    </div>
+  </footer>
+
+  <!-- ——— JS ——— -->
+  <script>
+    // Nav scroll state
+    const nav = document.querySelector('.nav');
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          nav.classList.toggle('scrolled', window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-toggle');
+    const links = document.querySelector('.nav-links');
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+    // Close mobile nav on link click
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Scroll-triggered reveal animations
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    }
+
+    // Smooth scroll for anchor links (fallback for Safari)
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
