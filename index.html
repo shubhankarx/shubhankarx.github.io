@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#FAFAF7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#17160F" media="(prefers-color-scheme: dark)">
   <title>Shubhankar — HCI Researcher & Software Engineer</title>
   <meta name="description" content="Shubhankar is a human-centered AI researcher bridging machine learning and HCI, with experience in experimental evaluation, UX and engineering.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,6 +31,24 @@
       --section-gap: clamp(80px, 10vw, 140px);
       --content-width: 1120px;
       --side-pad: clamp(20px, 5vw, 80px);
+      --nav-bg: rgba(250, 250, 247, 0.82);
+      --nav-bg-solid: rgba(250, 250, 247, 0.97);
+      color-scheme: light;
+    }
+
+    /* ——— Dark theme (warm, not pure black — keeps the editorial identity) ——— */
+    [data-theme="dark"] {
+      --bg: #17160F;
+      --fg: #ECEAE1;
+      --accent: #E8735A;
+      --accent-soft: #33221C;
+      --muted: #9C978A;
+      --border: #2E2B23;
+      --card-bg: #201E17;
+      --tag-bg: #26231B;
+      --nav-bg: rgba(23, 22, 15, 0.82);
+      --nav-bg-solid: rgba(23, 22, 15, 0.97);
+      color-scheme: dark;
     }
 
     html { scroll-behavior: smooth; font-size: 16px; }
@@ -40,6 +61,7 @@
       font-weight: 400;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      transition: background-color 0.4s var(--ease-out), color 0.4s var(--ease-out);
     }
 
     ::selection { background: var(--accent); color: #fff; }
@@ -72,7 +94,7 @@
       right: 0;
       z-index: 100;
       padding: 0 var(--side-pad);
-      background: rgba(250, 250, 247, 0.85);
+      background: var(--nav-bg);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid transparent;
@@ -314,6 +336,65 @@
     }
     .project-card:hover::before { transform: scaleX(1); }
 
+    /* ——— Project cover (image, or a designed panel when no demo exists) ——— */
+    .project-cover {
+      margin: -36px -32px 24px;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: var(--tag-bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .project-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s var(--ease-out);
+    }
+    .project-card:hover .project-cover img { transform: scale(1.04); }
+    .project-cover--blank {
+      display: flex;
+      align-items: flex-end;
+      padding: 16px 18px;
+      background:
+        radial-gradient(130% 130% at 100% 0%, var(--accent-soft), transparent 62%),
+        linear-gradient(135deg, var(--card-bg) 18%, var(--tag-bg));
+    }
+    .project-cover__kicker {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .project-cover--logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 28px;
+      background:
+        radial-gradient(130% 130% at 100% 0%, var(--accent-soft), transparent 62%),
+        linear-gradient(135deg, var(--card-bg) 18%, var(--tag-bg));
+    }
+    .cover-logo {
+      width: auto !important;
+      height: auto !important;
+      max-height: 46px;
+      max-width: 70%;
+      object-fit: contain !important;
+      opacity: 0.9;
+    }
+    [data-theme="dark"] .cover-logo { filter: invert(1); }
+
+    /* BMW cover: the source figure is wheel+sim side by side (2.7:1); crop to the
+       simulation half via CSS by zooming and anchoring right — no file crop needed. */
+    .cover-bmw {
+      background: url('images/bmw-braking.jpg') 100% 50% / 210% auto no-repeat;
+      transition: background-size 0.6s var(--ease-out);
+    }
+    .project-card:hover .cover-bmw { background-size: 222% auto; }
+
     .project-meta {
       display: flex;
       align-items: center;
@@ -491,6 +572,18 @@
       height: 8px;
       border-radius: 50%;
     }
+    .repo-report {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: auto;
+      transition: opacity 0.2s var(--ease-out);
+    }
+    .repo-report:hover { opacity: 0.65; }
 
     /* ——— Publications ——— */
     .publications-list { display: flex; flex-direction: column; gap: 0; }
@@ -584,6 +677,42 @@
     .timeline-org {
       font-size: 0.9rem;
       color: var(--muted);
+    }
+
+    /* ——— Skills ——— */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+    }
+    .skill-group h3 {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .skill-tag {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 400;
+      padding: 6px 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--fg);
+      transition: all 0.25s var(--ease-out);
+    }
+    .skill-tag:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
     }
 
     /* ——— Contact ——— */
@@ -691,7 +820,7 @@
         top: 64px;
         left: 0;
         right: 0;
-        background: rgba(250, 250, 247, 0.97);
+        background: var(--nav-bg-solid);
         backdrop-filter: blur(16px);
         padding: 24px var(--side-pad) 32px;
         gap: 20px;
@@ -712,7 +841,80 @@
       .contact-links { flex-direction: column; align-items: center; }
       .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
     }
+
+    /* ——— Nav right cluster & theme toggle ——— */
+    .nav-right { display: flex; align-items: center; gap: 28px; }
+    .theme-toggle {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      width: 38px;
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--fg);
+      flex-shrink: 0;
+      transition: border-color 0.25s var(--ease-out), color 0.25s var(--ease-out);
+    }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: inline-block; }
+
+    /* ——— Tabular figures (numbers align in columns) ——— */
+    .hero-label, .project-year, .pub-year, .timeline-date,
+    .repo-meta, .highlight-year { font-variant-numeric: tabular-nums; }
+
+    /* ——— Selected Highlights ——— */
+    .highlights-band { padding-top: clamp(44px, 6vw, 76px); padding-bottom: 0; }
+    .highlights-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 26px;
+    }
+    .highlights-list { display: flex; flex-direction: column; }
+    .highlight {
+      display: grid;
+      grid-template-columns: 128px 1fr;
+      gap: 28px;
+      padding: 22px 0;
+      border-top: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .highlight:last-child { border-bottom: 1px solid var(--border); }
+    .highlight-year {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent);
+    }
+    .highlight-text { font-size: 1.02rem; line-height: 1.6; color: var(--fg); }
+    .highlight-text strong { font-weight: 600; }
+    .highlight-text .sub { color: var(--muted); }
+    @media (max-width: 640px) {
+      .highlight { grid-template-columns: 1fr; gap: 6px; }
+    }
+
+    /* ——— Copied-state feedback ——— */
+    .contact-link.copied { border-color: var(--accent); color: var(--accent); }
   </style>
+  <script>
+    /* Set theme before first paint to avoid a flash of the wrong palette. */
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var dark = saved ? saved === 'dark'
+                         : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
 
@@ -722,25 +924,31 @@
   <nav class="nav" aria-label="Primary navigation">
     <div class="nav-inner">
       <a href="#" class="nav-logo">Shubhankar</a>
-      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-links" role="list">
-        <li><a href="#research">Research</a></li>
-        <li><a href="#publications">Publications</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#cv">Experience</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+      <div class="nav-right">
+        <ul class="nav-links" role="list">
+          <li><a href="#research">Research</a></li>
+          <li><a href="#publications">Publications</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#cv">Experience</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle theme">
+          <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </nav>
 
   <!-- ——— Hero ——— -->
   <header class="hero" id="main">
     <div class="hero-inner">
-      <p class="hero-label reveal">HCI Researcher & Software Engineer</p>
-      <h1 class="hero-headline reveal">Designing how humans <em>negotiate control</em> with AI systems</h1>
-      <p class="hero-desc reveal">Six years building production systems at Samsung for millions of users. Research on explainable AI and embodied interaction at Inria under Prof. Wendy Mackay. GPU-accelerated ML at Mines Paris-PSL. I work across the full stack — from CUDA kernels to user studies — to understand how people and AI systems share control.</p>
+      <p class="hero-label reveal">AI Engineer & HCI Researcher — Paris</p>
+      <h1 class="hero-headline reveal">I build AI systems and study how <em>people actually use them</em></h1>
+      <p class="hero-desc reveal">Six years shipping production software at Samsung to millions of users — search optimization, computer vision, Android applications. Research on explainable AI and human-AI interaction at Inria's Ex-Situ Lab under Prof. Wendy Mackay. Built custom GPU kernels and Transformer inference pipelines at Mines Paris-PSL. I work end-to-end: from model optimization to user studies, across Python, C++, CUDA, and JavaScript. Native English, professional French and Spanish. Open to new opportunities.</p>
       <div class="hero-ctas reveal">
         <a href="#research" class="btn btn-primary">View Research</a>
         <a href="#contact" class="btn btn-secondary">Get in Touch</a>
@@ -753,6 +961,31 @@
     </div>
   </header>
 
+  <!-- ——— Selected Highlights ——— -->
+  <section class="highlights-band" aria-label="Selected highlights">
+    <div class="section-inner">
+      <p class="highlights-eyebrow reveal">Selected Highlights</p>
+      <div class="highlights-list reveal-stagger">
+        <div class="highlight reveal" style="--i:0">
+          <span class="highlight-year">2024 – 25</span>
+          <p class="highlight-text"><strong>MSc High-Performance Computing &amp; AI</strong>, Mines Paris-PSL — <span class="sub">custom CUDA kernels for Transformer inference, and AI performance work on a real-time trading platform used by global banks.</span></p>
+        </div>
+        <div class="highlight reveal" style="--i:1">
+          <span class="highlight-year">2024</span>
+          <p class="highlight-text"><strong>Tune Crafter</strong> — master's thesis at Inria's Ex-Situ Lab (Prof. Wendy Mackay). <span class="sub">Gesture-controlled, explainable AI for music, evaluated with a user study.</span></p>
+        </div>
+        <div class="highlight reveal" style="--i:2">
+          <span class="highlight-year">2023</span>
+          <p class="highlight-text"><strong>Digital-nomad co-working prototype</strong>, UPM Madrid — <span class="sub">usability study with 16 participants, SUS&nbsp;85.5.</span></p>
+        </div>
+        <div class="highlight reveal" style="--i:3">
+          <span class="highlight-year">2016 – 22</span>
+          <p class="highlight-text"><strong>Samsung Research</strong> — Galaxy Store search optimization: <span class="sub">doubled active users and added ~$3M revenue; shipped Smartcrop computer vision to millions of devices.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ——— Research ——— -->
   <section id="research">
     <div class="section-inner">
@@ -763,6 +996,9 @@
       <div class="projects-grid reveal-stagger">
 
         <article class="project-card reveal" style="--i:0">
+          <div class="project-cover">
+            <img src="images/tune-crafter.jpg" alt="Tune Crafter — gesture-controlled AI music generation, demo still" loading="lazy">
+          </div>
           <div class="project-meta">
             <span class="project-year">Mar – Aug 2024</span>
             <span class="project-org">Inria, Ex-Situ Lab — Paris-Saclay</span>
@@ -781,6 +1017,9 @@
             <a href="https://scavalleroo.github.io/Tune-Crafter/" class="project-link" target="_blank" rel="noopener">
               View Project <span class="arrow">&rarr;</span>
             </a>
+            <a href="Tune_Crafter_Thesis.pdf" class="project-link" target="_blank" rel="noopener">
+              Thesis <span class="arrow">&rarr;</span>
+            </a>
             <a href="https://www.youtube.com/watch?v=AMt-UmCtakQ" class="project-link-video" target="_blank" rel="noopener">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               Demo
@@ -793,6 +1032,9 @@
         </article>
 
         <article class="project-card reveal" style="--i:1">
+          <div class="project-cover">
+            <img src="images/cockpit.jpg" alt="AI inference pipeline for the Cockpit trading platform — FastAPI, Transformers and Torch request flow" loading="lazy">
+          </div>
           <div class="project-meta">
             <span class="project-year">Oct 2024 – Sep 2025</span>
             <span class="project-org">Smart Trade — Aix-en-Provence</span>
@@ -806,9 +1048,17 @@
             <span class="tag">real-time systems</span>
             <span class="tag">transformers</span>
           </div>
+          <div class="project-links">
+            <a href="SmartTrade_HPC_Thesis.pdf" class="project-link" target="_blank" rel="noopener">
+              Thesis <span class="arrow">&rarr;</span>
+            </a>
+          </div>
         </article>
 
         <article class="project-card reveal" style="--i:2">
+          <div class="project-cover project-cover--blank">
+            <span class="project-cover__kicker">CUDA · GPU kernels</span>
+          </div>
           <div class="project-meta">
             <span class="project-year">Oct 2024 – Mar 2025</span>
             <span class="project-org">Mines Paris-PSL</span>
@@ -824,6 +1074,9 @@
         </article>
 
         <article class="project-card reveal" style="--i:3">
+          <div class="project-cover project-cover--logo">
+            <img src="images/samsung.png" class="cover-logo" alt="Samsung Research — Galaxy Store, Smartcrop, Global Goals" loading="lazy">
+          </div>
           <div class="project-meta">
             <span class="project-year">Aug 2016 – Aug 2022</span>
             <span class="project-org">Samsung Research Institute — Noida, India</span>
@@ -840,6 +1093,9 @@
         </article>
 
         <article class="project-card reveal" style="--i:4">
+          <div class="project-cover">
+            <img src="images/digital-nomads.jpg" alt="Digital Nomads co-working finder — prototype demo still" loading="lazy">
+          </div>
           <div class="project-meta">
             <span class="project-year">Jan – May 2023</span>
             <span class="project-org">Universidad Politécnica de Madrid</span>
@@ -865,6 +1121,7 @@
         </article>
 
         <article class="project-card reveal" style="--i:5">
+          <div class="project-cover cover-bmw" role="img" aria-label="Autonomous braking study — Unity driving simulator, 'Brakes Applied' scenario"></div>
           <div class="project-meta">
             <span class="project-year">Jan – Apr 2016</span>
             <span class="project-org">University of Florida</span>
@@ -879,6 +1136,9 @@
         </article>
 
         <article class="project-card reveal" style="--i:6">
+          <div class="project-cover">
+            <img src="images/dream-escape.jpg" alt="Dream Escape — horror game with A* enemy AI, demo still" loading="lazy">
+          </div>
           <div class="project-meta">
             <span class="project-year">Jan – Apr 2016</span>
             <span class="project-org">University of Florida</span>
@@ -900,6 +1160,9 @@
         </article>
 
         <article class="project-card reveal" style="--i:7">
+          <div class="project-cover">
+            <img src="images/vr-experiences.jpg" alt="Virtual Reality experiences for Oculus Rift and GearVR — demo still" loading="lazy">
+          </div>
           <div class="project-meta">
             <span class="project-year">Jan – Apr 2016</span>
             <span class="project-org">University of Florida</span>
@@ -916,6 +1179,55 @@
             <a href="https://www.youtube.com/watch?v=vAPwSx89XGM" class="project-link-video" target="_blank" rel="noopener">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               Watch Demo
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card reveal" style="--i:8">
+          <div class="project-cover">
+            <img src="images/data-mining.jpg" alt="Data-mining clustering workflow for credit-default risk assessment" loading="lazy">
+          </div>
+          <div class="project-meta">
+            <span class="project-year">Jan – May 2023</span>
+            <span class="project-org">Universidad Politécnica de Madrid</span>
+          </div>
+          <h3 class="project-title">Data Mining: Credit-Card Default Prediction</h3>
+          <p class="project-desc">A supervised data-mining study on the credit-card-default dataset — exploratory analysis, preprocessing and feature analysis, and classification models with evaluation. Completed for the European Master in HCI &amp; Design.</p>
+          <div class="project-tags">
+            <span class="tag">data mining</span>
+            <span class="tag">classification</span>
+            <span class="tag">feature analysis</span>
+            <span class="tag">Python</span>
+          </div>
+          <div class="project-links">
+            <a href="papers/data-mining-credit-default.pdf" class="project-link" target="_blank" rel="noopener">
+              Report <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card reveal" style="--i:9">
+          <div class="project-cover">
+            <img src="images/probability.jpg" alt="Posterior samples for the Gamma distribution shape and rate parameters" loading="lazy">
+          </div>
+          <div class="project-meta">
+            <span class="project-year">Dec 2024</span>
+            <span class="project-org">Mines Paris-PSL</span>
+          </div>
+          <h3 class="project-title">Statistical Inference: MLE for the Gamma Distribution</h3>
+          <p class="project-desc">Derived and implemented maximum-likelihood estimation for the Gamma distribution — log-likelihood, parameter fitting, and Monte-Carlo validation in NumPy/SciPy.</p>
+          <div class="project-tags">
+            <span class="tag">probability</span>
+            <span class="tag">MLE</span>
+            <span class="tag">statistics</span>
+            <span class="tag">NumPy / SciPy</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/shubhankarx/Probability" class="project-link" target="_blank" rel="noopener">
+              View Code <span class="arrow">&rarr;</span>
+            </a>
+            <a href="papers/probability-project.pdf" class="project-link" target="_blank" rel="noopener">
+              Report <span class="arrow">&rarr;</span>
             </a>
           </div>
         </article>
@@ -950,29 +1262,32 @@
             </div>
           </a>
 
-          <a href="https://github.com/shubhankarx/RNLA" class="repo-card" target="_blank" rel="noopener">
-            <div class="repo-name">RNLA</div>
+          <div class="repo-card">
+            <a href="https://github.com/shubhankarx/RNLA" class="repo-name" target="_blank" rel="noopener">RNLA &#8599;</a>
             <p class="repo-desc">Randomized Singular Value Decomposition — power iteration and single/multiple pass variants with residual analysis and visualization.</p>
             <div class="repo-meta">
               <span class="repo-lang"><span class="repo-lang-dot" style="background:#DA5B0B"></span> Jupyter Notebook</span>
+              <a href="papers/rnla-randomized-linear-algebra.pdf" class="repo-report" target="_blank" rel="noopener">Report &#8599;</a>
             </div>
-          </a>
+          </div>
 
-          <a href="https://github.com/shubhankarx/DeepLearning" class="repo-card" target="_blank" rel="noopener">
-            <div class="repo-name">DeepLearning</div>
+          <div class="repo-card">
+            <a href="https://github.com/shubhankarx/DeepLearning" class="repo-name" target="_blank" rel="noopener">DeepLearning &#8599;</a>
             <p class="repo-desc">Deep learning projects — model architectures, training pipelines, and experiments.</p>
             <div class="repo-meta">
               <span class="repo-lang"><span class="repo-lang-dot" style="background:#DA5B0B"></span> Jupyter Notebook</span>
+              <a href="papers/deeplearning-autoencoders.pdf" class="repo-report" target="_blank" rel="noopener">Report &#8599;</a>
             </div>
-          </a>
+          </div>
 
-          <a href="https://github.com/shubhankarx/Time-Series" class="repo-card" target="_blank" rel="noopener">
-            <div class="repo-name">Time-Series</div>
+          <div class="repo-card">
+            <a href="https://github.com/shubhankarx/Time-Series" class="repo-name" target="_blank" rel="noopener">Time-Series &#8599;</a>
             <p class="repo-desc">Time series analysis and forecasting methods.</p>
             <div class="repo-meta">
               <span class="repo-lang"><span class="repo-lang-dot" style="background:#DA5B0B"></span> Jupyter Notebook</span>
+              <a href="papers/time-series-report.pdf" class="repo-report" target="_blank" rel="noopener">Report &#8599;</a>
             </div>
-          </a>
+          </div>
 
         </div>
       </details>
@@ -990,17 +1305,29 @@
       <div class="publications-list">
 
         <div class="pub-item reveal">
-          <span class="pub-year">2024</span>
+          <span class="pub-year">2025</span>
           <div class="pub-content">
-            <h3>Tune Crafter: Gesture-Based Control for AI Music Generation</h3>
-            <p class="pub-venue">Master's Thesis — Inria, Ex-Situ Lab, Université Paris-Saclay</p>
+            <h3>Using Generative AI to Predict Data to Improve Latency at the Client</h3>
+            <p class="pub-venue">Advanced Master's Thesis — HPC &amp; AI for Industry, Mines Paris-PSL (with smartTrade Technologies)</p>
+            <a href="SmartTrade_HPC_Thesis.pdf" class="project-link" target="_blank" rel="noopener" style="margin-top:10px;">Read PDF <span class="arrow">&rarr;</span></a>
           </div>
         </div>
 
         <div class="pub-item reveal">
-          <span class="pub-year">—</span>
+          <span class="pub-year">2024</span>
           <div class="pub-content">
-            <p class="pub-placeholder">More publications coming soon.</p>
+            <h3>Tune Crafter: Gesture-Based Control for AI Music Generation</h3>
+            <p class="pub-venue">Master's Thesis — Inria, Ex-Situ Lab, Université Paris-Saclay</p>
+            <a href="Tune_Crafter_Thesis.pdf" class="project-link" target="_blank" rel="noopener" style="margin-top:10px;">Read PDF <span class="arrow">&rarr;</span></a>
+          </div>
+        </div>
+
+        <div class="pub-item reveal">
+          <span class="pub-year">2016</span>
+          <div class="pub-content">
+            <h3>Evaluating Driver Satisfaction with Autonomous Braking Behavior in Simulated Driving Conditions</h3>
+            <p class="pub-venue">Research Methods for Human-Centered Computing — University of Florida</p>
+            <a href="Autonomous_Braking_Study.pdf" class="project-link" target="_blank" rel="noopener" style="margin-top:10px;">Read PDF <span class="arrow">&rarr;</span></a>
           </div>
         </div>
 
@@ -1073,19 +1400,87 @@
     </div>
   </section>
 
+  <!-- ——— Skills ——— -->
+  <section id="skills">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <span class="section-number">05</span>
+        <h2 class="section-title">Tech Stack</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-group reveal">
+          <h3>Languages</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">C/C++</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">Kotlin</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">C#</span>
+            <span class="skill-tag">TypeScript</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <h3>ML & AI</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">PyTorch</span>
+            <span class="skill-tag">TensorFlow</span>
+            <span class="skill-tag">CUDA</span>
+            <span class="skill-tag">PySpark</span>
+            <span class="skill-tag">NumPy / Pandas</span>
+            <span class="skill-tag">Transformers</span>
+            <span class="skill-tag">MPI / OpenMP</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <h3>Engineering</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Git</span>
+            <span class="skill-tag">Docker</span>
+            <span class="skill-tag">Kubernetes</span>
+            <span class="skill-tag">AWS</span>
+            <span class="skill-tag">Jenkins</span>
+            <span class="skill-tag">Android</span>
+            <span class="skill-tag">Angular</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <h3>Design & Research</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">Adobe XD</span>
+            <span class="skill-tag">UX Research</span>
+            <span class="skill-tag">User Studies</span>
+            <span class="skill-tag">A/B Testing</span>
+            <span class="skill-tag">Prototyping</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <h3>Spoken Languages</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">English (Native)</span>
+            <span class="skill-tag">French (Professional)</span>
+            <span class="skill-tag">Spanish (Professional)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ——— Contact ——— -->
   <section id="contact" class="contact-section">
     <div class="section-inner">
       <div class="section-header reveal" style="justify-content: center; border-bottom: none; margin-bottom: 32px;">
-        <span class="section-number">05</span>
+        <span class="section-number">06</span>
         <h2 class="section-title">Contact</h2>
       </div>
       <h3 class="contact-headline reveal">Let's <em>connect</em></h3>
       <p class="contact-desc reveal">Whether it's about research collaboration, PhD opportunities, or just an interesting conversation — I'd love to hear from you.</p>
       <div class="contact-links reveal">
-        <a href="mailto:shubhankar12102@iiitd.ac.in" class="contact-link">
+        <a href="mailto:shubhankar12102@iiitd.ac.in" class="contact-link" id="email-link" data-email="shubhankar12102@iiitd.ac.in">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-          Email
+          <span class="email-label" aria-live="polite">Email</span>
         </a>
         <a href="https://github.com/shubhankarx" class="contact-link" target="_blank" rel="noopener">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
@@ -1163,6 +1558,38 @@
         }
       });
     });
+
+    // Theme toggle (persists choice; overrides OS preference once set)
+    const themeToggle = document.querySelector('.theme-toggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const next = isDark ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        try { localStorage.setItem('theme', next); } catch (e) {}
+      });
+    }
+
+    // Copy email to clipboard, with a graceful mailto fallback
+    const emailLink = document.getElementById('email-link');
+    if (emailLink) {
+      const label = emailLink.querySelector('.email-label');
+      const original = label.textContent;
+      let resetTimer;
+      emailLink.addEventListener('click', (e) => {
+        if (!navigator.clipboard) return; // no clipboard API → let mailto proceed
+        e.preventDefault();
+        navigator.clipboard.writeText(emailLink.dataset.email).then(() => {
+          label.textContent = 'Copied ✓';
+          emailLink.classList.add('copied');
+          clearTimeout(resetTimer);
+          resetTimer = setTimeout(() => {
+            label.textContent = original;
+            emailLink.classList.remove('copied');
+          }, 1600);
+        }).catch(() => { window.location.href = emailLink.getAttribute('href'); });
+      });
+    }
   </script>
 </body>
 </html>
