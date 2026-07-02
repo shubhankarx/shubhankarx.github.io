@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#FAFAF7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#17160F" media="(prefers-color-scheme: dark)">
+  <title>Interactive Lab — Shubhankar</title>
+  <meta name="description" content="Live, in-browser demos of Shubhankar's work — a voice assistant, gesture-controlled sound, self-checking evals, and grounded generation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #FAFAF7; --fg: #1A1A18; --accent: #C8432B; --accent-soft: #F4E8E4;
+      --muted: #6B6B66; --border: #E0DED8; --card-bg: #FFFFFF; --tag-bg: #F0EEEA;
+      --live: #2E7D57; --live-soft: #E4F0EA;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'Outfit', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --content-width: 1000px;
+      --side-pad: clamp(20px, 5vw, 64px);
+      color-scheme: light;
+    }
+    [data-theme="dark"] {
+      --bg: #17160F; --fg: #ECEAE1; --accent: #E8735A; --accent-soft: #33221C;
+      --muted: #9C978A; --border: #2E2B23; --card-bg: #201E17; --tag-bg: #26231B;
+      --live: #6BC79A; --live-soft: #1E2A23;
+      color-scheme: dark;
+    }
+
+    html { font-size: 16px; }
+    body {
+      font-family: var(--sans); background: var(--bg); color: var(--fg);
+      line-height: 1.6; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh; transition: background-color 0.4s var(--ease-out), color 0.4s var(--ease-out);
+    }
+    ::selection { background: var(--accent); color: #fff; }
+    a { color: inherit; text-decoration: none; }
+
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: var(--content-width); margin: 0 auto; padding: 20px var(--side-pad);
+    }
+    .nav-back {
+      font-family: var(--mono); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em;
+      color: var(--muted); display: inline-flex; align-items: center; gap: 8px;
+      transition: color 0.25s ease, gap 0.25s var(--ease-out);
+    }
+    .nav-back:hover { color: var(--fg); gap: 12px; }
+    .theme-toggle {
+      background: none; border: 1.5px solid var(--border); border-radius: 6px;
+      width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--fg);
+      transition: border-color 0.25s var(--ease-out), color 0.25s var(--ease-out);
+    }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: inline-block; }
+
+    main { max-width: var(--content-width); margin: 0 auto; padding: 24px var(--side-pad) 90px; }
+    .eyebrow {
+      font-family: var(--mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
+    }
+    h1 { font-family: var(--serif); font-size: clamp(2rem, 1.5rem + 2.2vw, 3rem); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .lede { color: var(--muted); font-size: 1.05rem; max-width: 60ch; margin-bottom: 8px; }
+
+    .section-label {
+      font-family: var(--mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+      margin: 48px 0 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+
+    /* ——— Featured live cards ——— */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .card {
+      display: flex; flex-direction: column;
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 26px 24px; position: relative; overflow: hidden;
+      transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out), border-color 0.35s var(--ease-out);
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--accent); transform: scaleX(0); transform-origin: left;
+      transition: transform 0.45s var(--ease-out);
+    }
+    .card.is-live:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(26,26,24,0.08); border-color: var(--accent); }
+    .card.is-live:hover::before { transform: scaleX(1); }
+
+    .card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .badge {
+      font-family: var(--mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 100px;
+    }
+    .badge.live { background: var(--live-soft); color: var(--live); }
+    .badge.wip  { background: var(--accent-soft); color: var(--accent); }
+    .badge.soon { background: var(--tag-bg); color: var(--muted); }
+    .card-for { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); margin-left: auto; }
+
+    .card h3 { font-family: var(--serif); font-size: 1.35rem; letter-spacing: -0.01em; margin-bottom: 8px; }
+    .card p { font-size: 0.92rem; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+    .card .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px; }
+    .tag {
+      font-family: var(--mono); font-size: 0.68rem; font-weight: 500; padding: 4px 10px;
+      background: var(--tag-bg); border-radius: 100px; color: var(--muted);
+    }
+    .card-cta {
+      margin-top: auto; font-family: var(--mono); font-size: 0.78rem; font-weight: 500;
+      color: var(--accent); display: inline-flex; align-items: center; gap: 6px;
+      transition: gap 0.25s var(--ease-out);
+    }
+    .card.is-live:hover .card-cta { gap: 10px; }
+    .card-cta.disabled { color: var(--muted); cursor: default; }
+
+    /* ——— Pipeline rows ——— */
+    .pipeline { display: flex; flex-direction: column; }
+    .prow {
+      display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center;
+      padding: 18px 0; border-bottom: 1px solid var(--border);
+    }
+    .prow:first-child { border-top: 1px solid var(--border); }
+    .prow h4 { font-family: var(--serif); font-size: 1.08rem; font-weight: 400; margin-bottom: 3px; }
+    .prow p { font-size: 0.85rem; color: var(--muted); }
+    .prow .rtags { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .note {
+      margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--border);
+      font-size: 0.82rem; color: var(--muted); line-height: 1.65; max-width: 68ch;
+    }
+    .note a { color: var(--accent); font-weight: 500; }
+
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; } }
+    @media (max-width: 560px) { .prow { grid-template-columns: 1fr; } .card-for { display: none; } }
+  </style>
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-back">&larr; Portfolio</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle theme">
+      <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </nav>
+
+  <main>
+    <p class="eyebrow">Interactive Lab</p>
+    <h1>Live demos, not screenshots</h1>
+    <p class="lede">Each of these runs in your browser (or on a small live backend). They're built to show range — an interactive system, an honest evaluation, and grounded generation — rather than tell you about it.</p>
+
+    <p class="section-label">Live now</p>
+    <div class="grid">
+
+      <article class="card is-live">
+        <div class="card-top">
+          <span class="badge live">● Live</span>
+          <span class="card-for">HCI · human-AI interaction</span>
+        </div>
+        <h3>Talk to my work</h3>
+        <p>A 3D avatar that listens and answers in voice. Ask about the Samsung work, the CUDA/inference projects, or Tune Crafter. The interaction layer is lifted from the psych project.</p>
+        <div class="tags"><span class="tag">voice I/O</span><span class="tag">three.js</span><span class="tag">grounded</span></div>
+        <a href="talk.html" class="card-cta">Open the assistant &rarr;</a>
+      </article>
+
+    </div>
+
+    <p class="section-label">In the pipeline</p>
+    <div class="pipeline">
+
+      <div class="prow">
+        <div>
+          <h4>Streaming + model A/B <span class="badge wip">Wiring up</span></h4>
+          <p>The assistant streams tokens live and lets you compare GitHub Models (gpt-4o-mini vs Llama vs Phi) side by side. Needs the small proxy deployed.</p>
+          <div class="rtags"><span class="tag">LLM engineering</span><span class="tag">GitHub Models</span><span class="tag">for Anthropic</span></div>
+        </div>
+        <span class="badge soon">next</span>
+      </div>
+
+      <div class="prow">
+        <div>
+          <h4>Gesture instrument <span class="badge soon">Planned</span></h4>
+          <p>Live webcam hand-tracking (MediaPipe) mapped to a Web Audio synth — a browser rebuild of the Tune Crafter interaction. Fully client-side.</p>
+          <div class="rtags"><span class="tag">MediaPipe</span><span class="tag">Web Audio</span><span class="tag">for HCI PhD</span></div>
+        </div>
+        <span class="badge soon">planned</span>
+      </div>
+
+      <div class="prow">
+        <div>
+          <h4>The eval that checks itself <span class="badge soon">Planned</span></h4>
+          <p>psych's headline result as an interactive chart: LLM forecast error vs. a persistence baseline — does the model beat naive momentum? Uses real (or clearly-labeled synthetic) run data.</p>
+          <div class="rtags"><span class="tag">evaluation</span><span class="tag">baselines</span><span class="tag">research rigor</span></div>
+        </div>
+        <span class="badge soon">planned</span>
+      </div>
+
+      <div class="prow">
+        <div>
+          <h4>Grounded answers + citations <span class="badge soon">Planned</span></h4>
+          <p>Every assistant answer shows the source project it drew from — retrieval and attribution, not open-ended chat.</p>
+          <div class="rtags"><span class="tag">retrieval</span><span class="tag">attribution</span><span class="tag">anti-hallucination</span></div>
+        </div>
+        <span class="badge soon">planned</span>
+      </div>
+
+      <div class="prow">
+        <div>
+          <h4>Attention / next-token viz <span class="badge soon">Planned</span></h4>
+          <p>From the from-scratch Transformer: visualize attention weights and next-token probabilities for a short prompt.</p>
+          <div class="rtags"><span class="tag">interpretability</span><span class="tag">transformers</span></div>
+        </div>
+        <span class="badge soon">planned</span>
+      </div>
+
+      <div class="prow">
+        <div>
+          <h4>Tune Crafter, full deploy <span class="badge soon">Separate</span></h4>
+          <p>The complete project — not a partial — deployed on its own backend. Shipped in a dedicated pass.</p>
+          <div class="rtags"><span class="tag">full stack</span><span class="tag">FastAPI + Next.js</span></div>
+        </div>
+        <span class="badge soon">later</span>
+      </div>
+
+    </div>
+
+    <p class="note">
+      Browser-only demos are hosted free on GitHub Pages; anything with a key or a server (live model calls, the Tune Crafter stack) runs on a small separate host. Live generation is served through a proxy backed by <strong>GitHub Models</strong>, keeping credentials server-side. Source for the assistant's engine: <a href="https://github.com/shubhankarx/psych" target="_blank" rel="noopener">psych</a>.
+    </p>
+  </main>
+
+  <script>
+    const themeToggle = document.querySelector('.theme-toggle');
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const next = isDark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+    });
+  </script>
+</body>
+</html>
